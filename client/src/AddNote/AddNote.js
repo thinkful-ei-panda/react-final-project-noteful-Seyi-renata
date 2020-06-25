@@ -22,11 +22,7 @@ class AddNote extends Component{
         }
     }
 
-    updateNoteName(noteContent){
-        this.setState({noteContent: noteContent});
-    }
-
-    updateName(noteName){
+    updateNoteName(noteName){
         this.setState({noteName: {value: noteName, touched: true}});
     }
 
@@ -39,7 +35,7 @@ class AddNote extends Component{
     }
 
     validateNoteName(){
-        const noteName = this.setState.noteName.value.trim();
+        const noteName = this.state.noteName.value.trim();
         if(noteName.length === 0){
             return 'Note name is Required';
         }
@@ -50,7 +46,8 @@ class AddNote extends Component{
         const noteName = this.state.noteName.value;
         const noteContent = this.state.noteContent;
         const noteFolder = this.state.noteFolder;
-        const currentTime = format(new Date(), 'yyyy-MM-dd 0000');
+        const currentTime = format(new Date(), 'MM-dd-yyyy');
+        console.log('addnote.js currentime=', currentTime);
 
         const noteObj = {
             name: noteName,
@@ -58,6 +55,9 @@ class AddNote extends Component{
             folderId: noteFolder,
             content: noteContent,
         }
+
+        console.log('addnote.js noteObj=', noteObj);
+        console.log('addnote,js jsonstringify=', JSON.stringify(noteObj));
 
         fetch (`http://localhost:9090/notes`, {
             method: 'POST',
@@ -75,7 +75,7 @@ class AddNote extends Component{
             return res.json()
         })
         .then (data => {
-            this.context.AddNote(data)
+            this.context.addNote(data)
             this.props.history.push('/')
         })
         .catch(error => {
@@ -103,8 +103,8 @@ class AddNote extends Component{
         const noteName = this.state.noteName.value.trim();
         const disableSave = noteName.length === 0 ? true: false;
         return (
-            <section className='AddNote'>
-        <h2>Create a Note</h2>
+        <section>
+            <h2>Create a Note</h2>
         <form onSubmit={this.handleSubmit}>
           <div role='alert'>
             {error && <p>{error.message}</p>}

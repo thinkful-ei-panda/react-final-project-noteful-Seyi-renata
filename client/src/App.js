@@ -15,6 +15,10 @@ import './App.css';
 //npm install
 //npm start
 
+
+//TO ADD THE DATE FORMAT
+//npm install date-fns --save
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -89,6 +93,7 @@ class App extends React.Component {
         return Promise.all([notesRes.json(), foldersRes.json()]);
       })
       .then(([notes, folders]) => {
+        console.log('app.js postfetch notes=', notes);
         this.setState({ notes, folders });
       })
       .catch((error) => {

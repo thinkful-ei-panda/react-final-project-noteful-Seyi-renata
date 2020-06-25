@@ -2,7 +2,8 @@ import React from 'react';
 import './Note.css';
 import { Link } from 'react-router-dom'
 import NotefulContext from '../NotefulContext'
-import format from 'date-fns/format'
+import {format} from 'date-fns';
+//import format from 'date-fns/format'
 
 export default class Note extends React.Component {
   static defaultProps = {
@@ -36,6 +37,7 @@ export default class Note extends React.Component {
 
   render() {
     const modified = this.props.dateMod
+    console.log('note.js modified =' , modified);
     return (
       <li
         onClick={() => console.log(this.props.name)}
@@ -46,7 +48,7 @@ export default class Note extends React.Component {
           </div>
         </Link>
         <section>
-          <p>Last Modified: {format(new Date(modified), 'MM/dd/yyyy')}</p>
+          <p>Last Modified: {format(new Date(modified), 'MM-dd-yyyy')}</p>
         </section>
         <div>
           <button
