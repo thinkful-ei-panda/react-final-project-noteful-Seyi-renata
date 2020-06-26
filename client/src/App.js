@@ -93,7 +93,6 @@ class App extends React.Component {
         return Promise.all([notesRes.json(), foldersRes.json()]);
       })
       .then(([notes, folders]) => {
-        console.log('app.js postfetch notes=', notes);
         this.setState({ notes, folders });
       })
       .catch((error) => {
