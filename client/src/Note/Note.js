@@ -3,7 +3,6 @@ import './Note.css';
 import { Link } from 'react-router-dom'
 import NotefulContext from '../NotefulContext'
 import {format} from 'date-fns';
-//import format from 'date-fns/format'
 
 export default class Note extends React.Component {
   static defaultProps = {
@@ -28,7 +27,7 @@ export default class Note extends React.Component {
       })
       .then(() => {
         this.context.deleteNote(noteId)
-        this.props.onDeleteNote(noteId) //this basically just rerenders this component
+        this.props.onDeleteNote(noteId) 
       })
       .catch(error => {
         console.error({ error })
@@ -37,7 +36,6 @@ export default class Note extends React.Component {
 
   render() {
     const modified = this.props.dateMod
-    console.log('note.js modified =' , modified);
     return (
       <li
         onClick={() => console.log(this.props.name)}

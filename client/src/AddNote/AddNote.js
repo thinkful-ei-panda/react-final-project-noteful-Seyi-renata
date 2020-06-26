@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import NotefulContext from '../NotefulContext';
 import ValidationError from '../ValidationError';
-import {format} from 'date-fns';
 import PropTypes from 'prop-types';
 
 
@@ -46,8 +45,7 @@ class AddNote extends Component{
         const noteName = this.state.noteName.value;
         const noteContent = this.state.noteContent;
         const noteFolder = this.state.noteFolder;
-        const currentTime = format(new Date(), 'MM-dd-yyyy');
-        console.log('addnote.js currentime=', currentTime);
+        const currentTime = new Date(); 
 
         const noteObj = {
             name: noteName,
@@ -56,14 +54,11 @@ class AddNote extends Component{
             content: noteContent,
         }
 
-        console.log('addnote.js noteObj=', noteObj);
-        console.log('addnote,js jsonstringify=', JSON.stringify(noteObj));
-
         fetch (`http://localhost:9090/notes`, {
             method: 'POST',
             body: JSON.stringify(noteObj),
             headers: {
-                'context-type': 'application/json',
+                'content-type': 'application/json',
             },
         })
         .then (res => {
