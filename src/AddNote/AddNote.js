@@ -21,6 +21,8 @@ class AddNote extends Component{
         }
     }
 
+
+
     updateNoteName(noteName){
         this.setState({noteName: {value: noteName, touched: true}});
     }
@@ -163,7 +165,7 @@ class AddNote extends Component{
 }
 
 AddNote.propTypes = {
-    history: PropTypes.object,
+    history: PropTypes.object.isRequired,
   };
 
 export default AddNote;
