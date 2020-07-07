@@ -1,37 +1,28 @@
 import React from 'react';
-import './Note.css';
 import { Link } from 'react-router-dom'
 import NotefulContext from '../NotefulContext'
-import {format} from 'date-fns';
+import format from 'date-fns/format'
+import './Note.css';
+import PropTypes from 'prop-types'
 
 export default class Note extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleClickDelete = this.handleClickDelete.bind(this);
+  }
+
   static defaultProps = {
     onDeleteNote: () => { },
+
   }
   static contextType = NotefulContext;
 
   handleClickDelete = e => {
-    e.preventDefault()
+    e.preventDefault();
     const noteId = this.props.id;
 
-    fetch(`http://localhost:9090/notes/${noteId}`, {
-      method: 'DELETE',
-      headers: {
-        'content-type': 'application/json'
-      },
-    })
-      .then(res => {
-        if (!res.ok)
-          return res.json().then(e => Promise.reject(e))
-        return res.json()
-      })
-      .then(() => {
-        this.context.deleteNote(noteId)
-        this.props.onDeleteNote(noteId) 
-      })
-      .catch(error => {
-        console.error({ error })
-      })
+    //this.props.history.push('/');
+    this.context.deleteNote(noteId);
   }
 
   render() {
@@ -46,10 +37,11 @@ export default class Note extends React.Component {
           </div>
         </Link>
         <section>
-          <p>Last Modified: {format(new Date(modified), 'MM-dd-yyyy')}</p>
+          <p>Last Modified: {format(new Date(modified), 'MM/dd/yyyy')}</p>
         </section>
         <div>
           <button
+            type="button"
             onClick={this.handleClickDelete}
           >
             Delete
@@ -58,4 +50,10 @@ export default class Note extends React.Component {
       </li>
     )
   }
+}
+
+Note.propTypes = {
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  dateMod: PropTypes.string.isRequired
 }

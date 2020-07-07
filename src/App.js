@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import NotefulContext from './NotefulContext';
+import AppError from './AppError/AppError';
 import FolderList from './FolderList/FolderList';
 import NoteList from './NoteList/NoteList';
 import FullNoteMain from './FullNoteMain/FullNoteMain';
@@ -61,9 +62,22 @@ class App extends React.Component {
   //this will trigger rerender
 
   handleDeleteNote = (noteId) => {
-    this.setState({
-      notes: this.state.notes.filter((note) => note.id !== noteId),
-    });
+    fetch(`http://localhost:9090/notes/${noteId}`, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+      },
+    })
+      .then((res) => {
+        if (!res.ok) return res.json().then((e) => Promise.reject(e));
+        return res.json();
+      })
+      .then(() => {
+        this.sendGetRequest()
+      })
+      .catch(
+        error => this.setState({error})
+      )
   };
 
   // componentDidUpdate(prevProps, prevState) {
@@ -83,20 +97,20 @@ class App extends React.Component {
   sendGetRequest() {
     Promise.all([
       fetch('http://localhost:9090/notes'),
-      fetch('http://localhost:9090/folders'),
+      fetch('http://localhost:9090/folders')
     ])
       .then(([notesRes, foldersRes]) => {
-        if (!notesRes.ok) return notesRes.json().then((e) => Promise.reject(e));
+        if (!notesRes.ok)
+          return notesRes.json().then(e => Promise.reject(e));
         if (!foldersRes.ok)
-          return foldersRes.json().then((e) => Promise.reject(e));
-
+          return foldersRes.json().then(e => Promise.reject(e));
         return Promise.all([notesRes.json(), foldersRes.json()]);
       })
       .then(([notes, folders]) => {
-        this.setState({ notes, folders });
+        this.setState({notes, folders});
       })
-      .catch((error) => {
-        console.error({ error });
+      .catch(error => {
+        console.error({error});
       });
   }
 
@@ -112,21 +126,27 @@ class App extends React.Component {
       <NotefulContext.Provider value={value}>
         <div className='App'>
           <header>
+            <h1>
             <Link to='/'>Noteful</Link>
+            </h1>
           </header>
           <div className='flex-container'>
+            <AppError>
             <section className='column sidebar'>
               <Route exact path='/' component={FolderList} />
               <Route path='/folder/:folderId' component={FolderList} />
               <Route path='/note/:noteId' component={FullNoteSide} />
             </section>
-            <main className='colomn'>
+            </AppError>
+            <AppError>
+            <main className='column'>
               <Route exact path='/' component={NoteList} />
               <Route path='/folder/:folderId' component={NoteList} />
               <Route path='/note/:noteId' component={FullNoteMain} />
               <Route path='/add-note' component={AddNote} />
               <Route path='/add-folder' component={AddFolder} />
             </main>
+            </AppError>
           </div>
         </div>
       </NotefulContext.Provider>

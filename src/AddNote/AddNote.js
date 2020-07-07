@@ -135,7 +135,7 @@ class AddNote extends Component{
           </div>
 
           <div>
-            <label>
+            <label htmlFor='folders'>
                 Folder:
             </label>
             {' '}
