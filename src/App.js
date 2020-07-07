@@ -69,7 +69,7 @@ class App extends React.Component {
       },
     })
       .then((res) => {
-        if (!res.ok) return res.json().then((e) => Promise.reject(e));
+        if (!res.ok) return res.json().then((event) => Promise.reject(event));
         return res.json();
       })
       .then(() => {

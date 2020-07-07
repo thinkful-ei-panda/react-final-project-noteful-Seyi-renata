@@ -17,12 +17,12 @@ export default class Note extends React.Component {
   }
   static contextType = NotefulContext;
 
-  handleClickDelete = e => {
-    e.preventDefault();
+  handleClickDelete = event => {
+    event.preventDefault();
     const noteId = this.props.id;
 
-    //this.props.history.push('/');
     this.context.deleteNote(noteId);
+    this.props.history.push('/');
   }
 
   render() {

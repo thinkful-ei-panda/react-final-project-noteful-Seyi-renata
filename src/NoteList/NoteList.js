@@ -17,6 +17,7 @@ export default class NoteList extends React.Component {
           return <Note
             key={note.id}
             id={note.id}
+            history={this.props.history}
             name={note.name}
             dateMod={note.modified}
           />
@@ -25,6 +26,7 @@ export default class NoteList extends React.Component {
       noteList = notes.map(note => {
         return <Note
           key={note.id}
+          history={this.props.history}
           id={note.id}
           name={note.name}
           dateMod={note.modified}
